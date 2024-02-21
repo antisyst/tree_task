@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
+import { motion, AnimatePresence } from "framer-motion";
 import familyService from "../services/familyService";
 
 const AddFamilyMemberForm = ({ onAdd, onCancel, familyMembers }) => {
@@ -56,82 +57,96 @@ const AddFamilyMemberForm = ({ onAdd, onCancel, familyMembers }) => {
     }
   };
 
+  const memoizedFamilyMembers = useMemo(() => {
+    return familyMembers.map((member) => (
+      <option key={member.id} value={member.id}>
+        {member.name}
+      </option>
+    ));
+  }, [familyMembers]);
+
   return (
-    <div className="main_form">
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            placeholder="Name"
-            onChange={handleChange}
-            required
-          />
-          {errors.name && <div className="error">{errors.name}</div>}
-        </div>
-        <div className="form-group">
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            placeholder="Age"
-            onChange={handleChange}
-            required
-            min="0"
-            max="100"
-          />
-          {errors.age && <div className="error">{errors.age}</div>}
-        </div>
-        <div className="form-group">
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-          {errors.gender && <div className="error">{errors.gender}</div>}
-        </div>
-        <div className="form-group">
-          <select
-            name="parentId"
-            value={formData.parentId}
-            onChange={handleChange}
-          >
-            <option value="">Parent</option>
-            {familyMembers.map((member) => (
-              <option key={member.id} value={member.id}>
-                {member.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <select
-            name="spouseId"
-            value={formData.spouseId}
-            onChange={handleChange}
-          >
-            <option value="">Spouse</option>
-            {familyMembers.map((member) => (
-              <option key={member.id} value={member.id}>
-                {member.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="button-group">
-          <button type="submit">Add</button>
-          <button type="button" onClick={onCancel}>
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="main_form"
+      >
+        <motion.div
+         initial={{ y: -50, opacity: 0 }}
+         animate={{ y: 0, opacity: 1 }}
+         exit={{ y: -50, opacity: 0 }}
+         >
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              placeholder="Name"
+              onChange={handleChange}
+              required
+            />
+            {errors.name && <div className="error">{errors.name}</div>}
+          </div>
+          <div className="form-group">
+            <input
+              type="number"
+              name="age"
+              value={formData.age}
+              placeholder="Age"
+              onChange={handleChange}
+              required
+              min="0"
+              max="100"
+            />
+            {errors.age && <div className="error">{errors.age}</div>}
+          </div>
+          <div className="form-group">
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            {errors.gender && <div className="error">{errors.gender}</div>}
+          </div>
+          <div className="form-group">
+            <select
+              name="parentId"
+              value={formData.parentId}
+              onChange={handleChange}
+            >
+              <option value="">Parent</option>
+              {memoizedFamilyMembers}
+            </select>
+          </div>
+          <div className="form-group">
+            <select
+              name="spouseId"
+              value={formData.spouseId}
+              onChange={handleChange}
+            >
+              <option value="">Spouse</option>
+              {memoizedFamilyMembers}
+            </select>
+          </div>
+          <div className="button-group">
+            <button type="submit">Add</button>
+            <button type="button" onClick={onCancel}>
+              Cancel
+            </button>
+          </div>
+        </form>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

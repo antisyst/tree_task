@@ -3,7 +3,7 @@ const { BadRequestError, NotFoundError } = require('../utils/customErrors');
 const { createFamilyMemberRules, updateFamilyMemberRules } = require('../utils/validators');
 
 let familyMembers = [
-  { id: 1, name: "John Doe", age: 40, gender: "male", spouseId: 2, childrenIds: [3, 4], parentId: null },
+  { id: 1, name: "John Doe", age: 40, gender: "male", spouseId: 2, childrenIds: [3, 4], parentId: 4 },
   { id: 2, name: "Jane Doe", age: 35, gender: "female", spouseId: 1, childrenIds: [3, 4], parentId: null },
   { id: 3, name: "Alice Doe", age: 10, gender: "female", parentId: 1, spouseId: null },
   { id: 4, name: "Bob Doe", age: 8, gender: "male", parentId: 1, spouseId: null },
@@ -23,7 +23,7 @@ const familyController = {
       const id = parseInt(req.params.id);
       const familyMember = familyMembers.find(member => member.id === id);
       if (!familyMember) {
-        throw new NotFoundError('Family member not found');
+        throw new NotFoundError(`Family member with ID ${id} not found`);
       } else {
         res.json(familyMember);
       }
@@ -47,7 +47,7 @@ const familyController = {
 
         const existingMember = familyMembers.find(member => member.id === newMember.id);
         if (existingMember) {
-          throw new BadRequestError('Member ID already exists');
+          throw new BadRequestError(`Family member with ID ${newMember.id} already exists`);
         }
 
         familyMembers.push(newMember);
@@ -71,7 +71,7 @@ const familyController = {
         const id = parseInt(req.params.id);
         const updatedMemberIndex = familyMembers.findIndex(member => member.id === id);
         if (updatedMemberIndex === -1) {
-          throw new NotFoundError('Family member not found');
+          throw new NotFoundError(`Family member with ID ${id} not found`);
         }
         familyMembers[updatedMemberIndex] = { ...familyMembers[updatedMemberIndex], ...req.body };
         res.json(familyMembers[updatedMemberIndex]);
@@ -86,10 +86,10 @@ const familyController = {
       const id = parseInt(req.params.id);
       const deletedIndex = familyMembers.findIndex(member => member.id === id);
       if (deletedIndex === -1) {
-        throw new NotFoundError('Family member not found');
+        throw new NotFoundError(`Family member with ID ${id} not found`);
       } else {
         const deletedMember = familyMembers.splice(deletedIndex, 1)[0];
-        res.json({ message: 'Family member deleted successfully', deletedMember });
+        res.json({ message: `Family member with ID ${id} deleted successfully`, deletedMember });
       }
     } catch (error) {
       next(error);
@@ -130,7 +130,7 @@ const familyController = {
     } catch (error) {
       next(error);
     }
-  },
+  }
 };
 
 module.exports = familyController;

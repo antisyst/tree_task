@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import { Tree } from "react-d3-tree";
-import FamilyMember from "./FamilyMember";
 import AddFamilyMemberForm from "./AddFamilyMemberForm";
 import EditFamilyMemberForm from "./EditFamilyMemberForm";
 import { FamilyContext } from "../context/FamilyContext";
+import FamilyMemberList from "./FamilyMemberList";
 import { IoAdd } from "react-icons/io5";
+import { Tooltip } from "react-tooltip";
+import FamilyTreeDisplay from "./FamilyTreeDisplay";
 
 const FamilyTree = () => {
   const {
@@ -82,38 +83,30 @@ const FamilyTree = () => {
   return (
     <div className="family-tree-container">
       <div className="tree-container">
-        <Tree
-          data={treeData}
+        <FamilyTreeDisplay
+          treeData={treeData}
           translate={translate}
-          zoomable={true}
-          zoom={1}
-          orientation="vertical"
-          collapsible={true}
-          separation={{ siblings: 1.5, nonSiblings: 2 }}
-          zoomAndPan={{
-            scaleExtent: [0.1, 5],
-            translateExtent: { x: [-1000, 500], y: [-500, 500] },
-            onZoom: onZoom,
-          }}
+          onZoom={onZoom}
         />
       </div>
       <div className="members">
         <h2>Family Member List</h2>
         <div className="main_container">
-          <div className="family-members">
-            {familyMembers.map((member) => (
-              <FamilyMember
-                key={member.id}
-                member={{ ...member, age: parseInt(member.age) }}
-                onDelete={() => handleDeleteMember(member.id)}
-                onEdit={() => handleEditMember(member)}
-              />
-            ))}
-          </div>
+          <FamilyMemberList
+            familyMembers={familyMembers}
+            onDelete={handleDeleteMember}
+            onEdit={handleEditMember}
+          />
           <div className="add-member-section">
             {!showAddForm ? (
-              <button onClick={() => setShowAddForm(true)} className="add">
-                <IoAdd /> <p>Add Member</p>
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="add"
+                data-tooltip-id="add-tooltip"
+                data-tooltip-content="Add Member"
+              >
+                <Tooltip id="add-tooltip" />
+                <IoAdd />
               </button>
             ) : (
               <AddFamilyMemberForm

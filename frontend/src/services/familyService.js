@@ -61,7 +61,7 @@ const familyService = {
     } catch (error) {
       throw new Error("Failed to add child");
     }
-  },
+  }
 };
 
 export default familyService;
