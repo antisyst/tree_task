@@ -39,7 +39,8 @@ const familyService = {
 
   deleteFamilyMember: async (id) => {
     try {
-      await api.delete(`/family/${id}`);
+      const response = await api.delete(`/family/${id}`);
+      return response.data;
     } catch (error) {
       throw new Error("Failed to delete family member");
     }
@@ -47,7 +48,7 @@ const familyService = {
 
   addSpouse: async (memberId, spouseId) => {
     try {
-      const response = await api.post(`/family/add-spouse`, { memberId, spouseId });
+      const response = await api.post("/family/spouse", { memberId, spouseId });
       return response.data;
     } catch (error) {
       throw new Error("Failed to add spouse");
@@ -56,7 +57,7 @@ const familyService = {
 
   addChild: async (parentId, childId) => {
     try {
-      const response = await api.post(`/family/add-child`, { parentId, childId });
+      const response = await api.post("/family/child", { parentId, childId });
       return response.data;
     } catch (error) {
       throw new Error("Failed to add child");

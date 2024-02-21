@@ -10,6 +10,8 @@ const FamilyMember = ({ member, onDelete, onEdit }) => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: member.id * 0.1 }}
       className="family-member"
+      data-tooltip-content={member.name}
+      data-tooltip-id="name-tooltip"
     >
       <div className="info">
         <div className="age">Name: {member.name}</div>
@@ -34,6 +36,7 @@ const FamilyMember = ({ member, onDelete, onEdit }) => {
           Delete
         </button>
         <Tooltip id="edit-tooltip" />
+        <Tooltip id="name-tooltip" />
         <Tooltip id="delete-tooltip" />
       </div>
     </motion.div>
