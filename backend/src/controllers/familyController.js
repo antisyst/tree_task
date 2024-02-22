@@ -3,7 +3,7 @@ const { BadRequestError, NotFoundError } = require('../utils/customErrors');
 const { createFamilyMemberRules, updateFamilyMemberRules } = require('../utils/validators');
 
 let familyMembers = [
-  { id: 1, name: "John Doe", age: 40, gender: "male", spouseId: 2, childrenIds: [3, 4], parentId: null },
+  { id: 1, name: "John Doe", age: 40, gender: "male", spouseId: 2, childrenIds: [3, 4], parentId: 4 },
   { id: 2, name: "Jane Doe", age: 35, gender: "female", spouseId: 1, childrenIds: [3, 4], parentId: null },
   { id: 3, name: "Alice Doe", age: 10, gender: "female", parentId: 1, spouseId: null },
   { id: 4, name: "Bob Doe", age: 8, gender: "male", parentId: 1, spouseId: null },
@@ -17,6 +17,7 @@ const familyController = {
       next(error);
     }
   },
+
 
   getFamilyMemberById: async (req, res, next) => {
     try {
@@ -45,11 +46,9 @@ const familyController = {
         const newMember = req.body;
         newMember.id = familyMembers.length > 0 ? Math.max(...familyMembers.map(member => member.id)) + 1 : 1;
 
-        if (newMember.spouseId) {
-          const existingSpouse = familyMembers.find(member => member.spouseId === newMember.spouseId);
-          if (existingSpouse) {
-            throw new BadRequestError(`Spouse with ID ${newMember.spouseId} already exists for another member`);
-          }
+        const existingMember = familyMembers.find(member => member.id === newMember.id);
+        if (existingMember) {
+          throw new BadRequestError(`Family member with ID ${newMember.id} already exists`);
         }
 
         familyMembers.push(newMember);

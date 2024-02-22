@@ -46,40 +46,45 @@ const FamilyMemberList = ({ familyMembers, onDelete, onEdit }) => {
         onChange={handleSearch}
       />
       <div className="family-members">
-        {filteredMembers.map((member) => (
-          <div key={member.id}>
-            <FamilyMember
-              member={{ ...member, age: parseInt(member.age) }}
-              onDelete={() => handleDeleteClick(member.id)}
-              onEdit={() => onEdit(member)}
-            />
-            <AnimatePresence>
-              {showDeleteModal && selectedMemberId === member.id && (
-                <motion.div
-                  className="modal"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
+        {filteredMembers.length > 0 ? (
+          filteredMembers.map((member) => (
+            <div key={member.id}>
+              <FamilyMember
+                member={{ ...member, age: parseInt(member.age) }}
+                onDelete={() => handleDeleteClick(member.id)}
+                onEdit={() => onEdit(member)}
+              />
+              <AnimatePresence>
+                {showDeleteModal && selectedMemberId === member.id && (
                   <motion.div
-                    className="modal-content"
-                    initial={{ y: -50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -50, opacity: 0 }}
+                    className="modal"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                   >
-                    <p>
-                      Are you sure you want to delete <span>{member.name}</span>?
-                    </p>
-                    <div className="modal-buttons">
-                      <button onClick={handleConfirmDelete}>Delete</button>
-                      <button onClick={handleCancelDelete}>Cancel</button>
-                    </div>
+                    <motion.div
+                      className="modal-content"
+                      initial={{ y: -50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -50, opacity: 0 }}
+                    >
+                      <p>
+                        Are you sure you want to delete{" "}
+                        <span>{member.name}</span>?
+                      </p>
+                      <div className="modal-buttons">
+                        <button onClick={handleConfirmDelete}>Delete</button>
+                        <button onClick={handleCancelDelete}>Cancel</button>
+                      </div>
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
+                )}
+              </AnimatePresence>
+            </div>
+          ))
+        ) : (
+          <p>No members found.</p>
+        )}
       </div>
     </div>
   );

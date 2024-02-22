@@ -8,33 +8,15 @@ class CustomError extends Error {
 }
 
 class BadRequestError extends CustomError {
-  constructor(message = 'Bad Request') {
+  constructor(message) {
     super(message, 400);
   }
 }
 
-class UnauthorizedError extends CustomError {
-  constructor(message = 'Unauthorized') {
-    super(message, 401);
-  }
-}
-
-class ForbiddenError extends CustomError {
-  constructor(message = 'Forbidden') {
-    super(message, 403);
-  }
-}
-
 class NotFoundError extends CustomError {
-  constructor(message = 'Not Found') {
+  constructor(message) {
     super(message, 404);
   }
 }
 
-module.exports = {
-  CustomError,
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-};
+module.exports = { CustomError, BadRequestError, NotFoundError };

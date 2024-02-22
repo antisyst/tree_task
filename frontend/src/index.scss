@@ -320,3 +320,55 @@ button {
   width: 270px;
   margin-bottom: 14px;
 }
+
+.auth_form {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 6px;
+  padding: 30px;
+}
+
+.auth_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.auth_button {
+  display: flex;
+  width: 300px;
+  height: 50px;
+  flex-direction: row;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  margin: 3px 0;
+  background: none;
+  border: none;
+  gap: 6px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.auth_anchor {
+  text-decoration: none;
+  color: var(--color-main);
+}
+
+.auth_input {
+  width: 300px;
+  height: 50px;
+  outline: none;
+  margin: 3px 0;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1.6px solid var(--color-main);
+}
+.auth_label {
+  display: none;
+}
